@@ -1,8 +1,8 @@
 import torch
 import random
 import numpy as np
-import torch.nn.Module as Mod
-import torch.optim.Optimizer as Opt
+import torch.nn.modules as Mod
+import torch.optim.optimizer as Opt
 
 from tqdm import tqdm
 from .dataset import TinyImageNet as TIN

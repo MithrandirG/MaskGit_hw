@@ -5,7 +5,7 @@ import torch.nn.modules as Mod
 import torch.optim.optimizer as Opt
 
 from tqdm import tqdm
-from .dataset import TinyImageNet as TIN
+from datasets import TinyImageNet as TIN
 from configs import FLAGS
 from torch.optim.lr_scheduler import _LRScheduler
 from torch.utils.tensorboard import SummaryWriter

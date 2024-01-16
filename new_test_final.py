@@ -19,6 +19,9 @@ from torch.utils.data import DataLoader
 
 from new_VQVAE_and_test.new_vqvae import Encoder, Decoder, Model
 
+from dataset import TinyImageNet
+from new_dataset import TinyImageNet_load
+
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # ------------------------------------ Hyperparameters ------------------------------------ #
@@ -36,19 +39,29 @@ commitment_cost = 0.25
 decay = 0.99
 
 # ------------------------------------- Data Settings ------------------------------------- #
-training_data = datasets.CIFAR10(root="data", train=True, download=True,
-                                  transform=transforms.Compose([
-                                      transforms.ToTensor(),
-                                      transforms.Normalize((0.5,0.5,0.5), (1.0,1.0,1.0))
-                                  ]))
+# training_data = datasets.CIFAR10(root="data", train=True, download=True,
+#                                   transform=transforms.Compose([
+#                                       transforms.ToTensor(),
+#                                       transforms.Normalize((0.5,0.5,0.5), (1.0,1.0,1.0))
+#                                   ]))
 
-validation_data = datasets.CIFAR10(root="data", train=False, download=True,
-                                  transform=transforms.Compose([
-                                      transforms.ToTensor(),
-                                      transforms.Normalize((0.5,0.5,0.5), (1.0,1.0,1.0))
-                                  ]))
+# validation_data = datasets.CIFAR10(root="data", train=False, download=True,
+#                                   transform=transforms.Compose([
+#                                       transforms.ToTensor(),
+#                                       transforms.Normalize((0.5,0.5,0.5), (1.0,1.0,1.0))
+#                                   ]))
 
-data_variance = np.var(training_data.data / 255.0)
+training_data=datasets.ImageFolder(root='./tiny-imagenet-200/train/', 
+                                    transform=transforms.Compose([
+                                        transforms.ToTensor(),
+                                        transforms.Normalize((0.5,0.5,0.5), (1.0,1.0,1.0))
+                                    ]))
+
+validation_data=TinyImageNet_load('./tiny-imagenet-200/', train=False,
+                                    transform=transforms.Compose([
+                                        transforms.ToTensor(),
+                                        transforms.Normalize((0.5,0.5,0.5), (1.0,1.0,1.0))
+                                    ]))
 
 training_loader = DataLoader(training_data, 
                              batch_size=batch_size, 
@@ -58,6 +71,8 @@ validation_loader = DataLoader(validation_data,
                                batch_size=32,
                                shuffle=True,
                                pin_memory=True)
+
+data_variance = 0.063
 
 model = Model(num_hiddens, num_residual_layers, num_residual_hiddens,
               num_embeddings, embedding_dim, 

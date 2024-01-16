@@ -72,7 +72,7 @@ validation_loader = DataLoader(validation_data,
                                shuffle=True,
                                pin_memory=True)
 
-data_variance = 0.063
+data_variance = 0.27*0.27
 
 model = Model(num_hiddens, num_residual_layers, num_residual_hiddens,
               num_embeddings, embedding_dim, 
